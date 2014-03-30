@@ -1,5 +1,7 @@
 # Rhino
 
+![Rhino](http://nu-hin.github.io/rhino/images/result/thumbs800/000.jpg "Rhino")
+
 ## Description
 
 Rhino is a robot based on AVR ATmega microcontroller.
