@@ -6,7 +6,9 @@ F_CPU=16000000L
 
 # Programmer
 PART=m8
-PROGRAMMER=STK500
+PROGRAMMER=avrisp
+PORT=/dev/ttyACM0
+BAUD=13200
 
 # Fuses
 H_FUSE=0xdf
@@ -18,10 +20,12 @@ CFLAGS=-std=$(STD) -Os
 SOURCES=adc.c delay.c firmware.c motor.c ping.c shift.c sound.c
 OBJECTS=$(SOURCES:.c=.o)
 
-FUSE_CMD= avrdude -c $(PROGRAMMER) -p$(PART) -U hfuse:w:$(H_FUSE):m -U lfuse:w:$(L_FUSE):m
-FLASH_CMD	= avrdude -c $(PROGRAMMER) -B 1 -p$(PART) -U flash:w:firmware.hex
+AVRDUDE= avrdude -c $(PROGRAMMER) -P $(PORT) -p$(PART) -B $(BAUD)
 
-install : fuse flash
+FUSE_CMD=$(AVRDUDE) -U hfuse:w:$(H_FUSE):m -U lfuse:w:$(L_FUSE):m
+FLASH_CMD=$(AVRDUDE) -U flash:w:firmware.hex
+
+
 
 firmware : firmware.elf
 	avr-objcopy -j .text -j .data -O ihex firmware.elf firmware.hex
@@ -39,6 +43,8 @@ flash : firmware
 
 fuse:
 	$(FUSE_CMD)
+
+install : fuse flash
 
 clean:
 	rm -rf *.o *.elf *.hex
