@@ -6,8 +6,8 @@ F_CPU=16000000L
 
 # Programmer
 PART=m8
-PROGRAMMER=avrisp
-PORT=/dev/ttyACM0
+PROGRAMMER=avrispv2
+PORT=/dev/ttyUSB0
 BAUD=13200
 
 # Fuses
